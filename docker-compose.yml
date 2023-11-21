@@ -14,7 +14,7 @@ services:
 
   redis:
     image: redis:7.2-rc-alpine
-    restart: always
+    restart: on-failure
     container_name: redis
     ports:
       - '6379:6379'
