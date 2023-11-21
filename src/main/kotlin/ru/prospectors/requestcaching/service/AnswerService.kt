@@ -1,17 +1,9 @@
 package ru.prospectors.requestcaching.service
 
-import org.springframework.stereotype.Service
+import reactor.core.publisher.Mono
 import ru.prospectors.requestcaching.model.Answer
-import ru.prospectors.requestcaching.repository.AnswerRepository
 
-@Service
-class AnswerService(
-    private val answerRepository: AnswerRepository
-) {
-    fun findById(id: String) = answerRepository.findById(id)
-    fun addAnswer(answer: Answer) = answerRepository.save(answer)
-
-    init {
-        println("init")
-    }
+interface AnswerService {
+    fun findById(id: String): Mono<Answer?>
+    fun addAnswer(answer: Answer): Mono<Answer>
 }
