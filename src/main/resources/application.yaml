@@ -1,2 +1,14 @@
 server:
   port: 8888
+
+spring:
+  redis:
+    redisson:
+      config: |
+        singleServerConfig:
+          database: 0
+          address: redis://127.0.0.1:6379
+          password: 1234
+
+app:
+  ttl: 10 # in minutes
