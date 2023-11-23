@@ -8,4 +8,5 @@ class RequestCachingApplication
 
 fun main(args: Array<String>) {
     runApplication<RequestCachingApplication>(*args)
+
 }

@@ -7,20 +7,33 @@ import org.springframework.stereotype.Repository
 import reactor.core.publisher.Mono
 import ru.prospectors.requestcaching.model.Answer
 import ru.prospectors.requestcaching.repository.AnswerRepository
+import ru.prospectors.requestcaching.webclient.WebClientRepository
 import java.util.concurrent.TimeUnit
 
 @Repository
 class AnswerRedisRepository(
-    private val client: RedissonReactiveClient
+    private val client: RedissonReactiveClient,
+    private val webClient: WebClientRepository
 ): AnswerRepository {
     private val answers: RMapCacheReactive<String, Answer> = client.getMapCache("answers")
     @Value("\${app.ttl}")
     private var ttl: Long = 10
 
-    override fun findById(id: String): Mono<Answer?> =
-        answers.get(id)
+    override fun findById(id: String): Mono<Answer?> {
+        return answers.get(id)
+            .switchIfEmpty(webClient.findById(id).flatMap { answer ->
+                if (answer != null) {
+                    save(answer)
+                } else {
+                    Mono.empty()
+                }
+            })
+    }
 
-    override fun save(answer: Answer): Mono<Answer> =
-        answers.fastPut(answer.id, answer, ttl, TimeUnit.MINUTES)
+
+    override fun save(answer: Answer): Mono<Answer> {
+        return answers.fastPut(answer.id, answer, ttl, TimeUnit.MINUTES)
             .thenReturn(answer)
+    }
+
 }

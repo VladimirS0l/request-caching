@@ -9,6 +9,18 @@ spring:
           database: 0
           address: redis://127.0.0.1:6379
           password: 1234
+  r2dbc:
+    generate-unique-name: true
+    name: postgres
+    password: 1234
+    url: r2dbc:postgresql://postgres/postgres
+    username: postgres
+  flyway:
+    enabled: true
+    baselineOnMigrate: true
+    url: jdbc:postgresql://localhost:5432/postgres
+    user: postgres
+    password: 1234
 
 app:
   ttl: 10 # in minutes

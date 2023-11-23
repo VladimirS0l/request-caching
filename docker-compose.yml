@@ -11,6 +11,7 @@ services:
       SERVER_PORT: "8888"
     depends_on:
       - redis
+      - postgres
 
   redis:
     image: redis:7.2-rc-alpine
@@ -19,6 +20,18 @@ services:
     ports:
       - '6379:6379'
     command: redis-server --save 20 1 --loglevel warning --requirepass 1234
+    volumes:
+      - cache:/data
+
+  postgres:
+    container_name: postgres
+    image: postgres:13.0-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
     volumes:
       - cache:/data
 
