@@ -32,6 +32,7 @@ dependencies {
     implementation("org.postgresql:postgresql")
     implementation("org.flywaydb:flyway-core")
     implementation("org.springframework:spring-jdbc")
+    implementation("org.springdoc:springdoc-openapi-ui:1.6.15")
     compileOnly("org.redisson:redisson-spring-boot-starter:3.21.1")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")
