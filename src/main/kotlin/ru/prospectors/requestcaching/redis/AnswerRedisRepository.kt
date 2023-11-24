@@ -8,14 +8,12 @@ import org.springframework.stereotype.Repository
 import reactor.core.publisher.Mono
 import ru.prospectors.requestcaching.model.Answer
 import ru.prospectors.requestcaching.repository.AnswerRepository
-import ru.prospectors.requestcaching.webclient.WebClientRepository
 import java.util.concurrent.TimeUnit
 
 @Primary
 @Repository
 class AnswerRedisRepository(
     private val client: RedissonReactiveClient,
-    private val webClient: WebClientRepository
 ): AnswerRepository {
     private val answers: RMapCacheReactive<String, Answer> = client.getMapCache("answers")
     @Value("\${app.ttl}")
